@@ -170,10 +170,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var boot
   !*** ./src/js/funko.js ***!
   \*************************/
 /*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Funko; });\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Funko = // export default -> le indico que toda la clase podrá ser exportada y accededida desde otros archivos\nfunction Funko(codigo, nombre, numeroSerie, categoria, descripcion, stock, precio, imagen) {\n  _classCallCheck(this, Funko);\n\n  this.codigo = codigo;\n  this.nombre = nombre;\n  this.numeroSerie = numeroSerie;\n  this.categoria = categoria;\n  this.descripcion = descripcion;\n  this.stock = stock;\n  this.precio = precio;\n  this.imagen = imagen;\n};\n\n\n\n//# sourceURL=webpack:///./src/js/funko.js?");
+eval("throw new Error(\"Module build failed (from ./node_modules/babel-loader/lib/index.js):\\nError: ENOENT: no such file or directory, open 'D:\\\\ROLLING CODE\\\\FULLSTACK\\\\funkopop\\\\src\\\\js\\\\funko.js'\");\n\n//# sourceURL=webpack:///./src/js/funko.js?");
 
 /***/ })
 
