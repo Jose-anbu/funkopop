@@ -2,10 +2,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import '../css/style.css';
 import Funko from './funko.js';  // import nombreDeLaVariableDondeVoyAGuardarLoQueQuieroImportar from './archivoAImportar'; -> si está en la misma ubicación solo agregar ./
+import $ from 'jquery';
 
 // INICIALIZO VARIABLES
 let productos = [];
 leerProductos();
+
+let productoExistente = false; // false = producto es nuevo; true = modificar producto
 
 window.agregarProducto = function (event) {     // window.nombreDeVariable = function (event) -> para cuando queremos acceder a una función por fuera del archivo js cuando usamos webpack 
     event.preventDefault();
@@ -26,7 +29,7 @@ window.agregarProducto = function (event) {     // window.nombreDeVariable = fun
         localStorage.setItem('funkopopKey', JSON.stringify(productos));
 
         // LIMPIAR FORMULARIO
-        document.getElementById('formProducto').reset();
+        limpiarFormulario();
 
         leerProductos();
     }
@@ -166,7 +169,7 @@ function dibujarFilas(_productos) {
         <td>$ ${_productos[i].precio}</td>
         <td>${_productos[i].imagen}</td>
         <td>
-            <button class="btn btn-outline-info">Editar</button>
+            <button class="btn btn-outline-info" onclick="editarProducto(${_productos[i].codigo})">Editar</button>
             <button class="btn btn-outline-danger" onclick="eliminarProducto(this)" id="${_productos[i].codigo}">Borrar</button>
         </td>
     </tr>`
@@ -211,3 +214,96 @@ window.eliminarProducto = function (prod) {
     console.log(arregloFiltrado);
 }
 
+window.editarProducto = function (codigo) {
+    console.log(codigo);
+
+    let modalProducto = document.getElementById('modalProducto');
+    // BUSCAR PRODUCTO: usamos find -> trae el producto que corresponde a la condicion que le coloquemos
+    let objetoEncontrado = productos.find(function (producto) {
+        return producto.codigo == codigo;
+    })
+
+    console.log(objetoEncontrado);
+
+    // CARGAR EN EL MODAL LOS DATOS DEL OBJETO QUE QUIERO EDITAR
+    document.getElementById('codigo').value = objetoEncontrado.codigo;
+    document.getElementById('nombre').value = objetoEncontrado.nombre;
+    document.getElementById('numSerie').value = objetoEncontrado.numeroSerie;
+    document.getElementById('categoria').value = objetoEncontrado.categoria;
+    document.getElementById('descripcion').value = objetoEncontrado.descripcion;
+    document.getElementById('stock').value = objetoEncontrado.stock;
+    document.getElementById('precio').value = objetoEncontrado.precio;
+    document.getElementById('imagen').value = objetoEncontrado.imagen;
+
+    // TAMBIEN PODEMOS HACERLO DE LA SIGUIENTE MANERA
+    // document.getElementById('codigo').value = objetoEncontrado.codigo;
+    // nombre.value = objetoEncontrado.nombre;
+    // numeroSerie.value = objetoEncontrado.numeroSerie;
+    // categoria.value = objetoEncontrado.categoria;
+    // descripcion.value = objetoEncontrado.descripcion;
+    // stock.value = objetoEncontrado.stock;
+    // precio.value = objetoEncontrado.precio;
+    // imagen.value = objetoEncontrado.imagen;
+
+    // CAMBIAR EL VALOR DE LA VARIABLE BANDERA
+    productoExistente = true;
+
+    // ABRIR LA VENTANA MODAL
+    $(modalProducto).modal('show');
+}
+
+window.guardarDatos = function (event) {
+
+    if (productoExistente == false) {
+        // agregar un nuevo producto
+        agregarProducto(event);
+    } else {
+        // modificar el producto existente
+        productoModificado(event);
+    }
+}
+
+function productoModificado(event) {
+    event.preventDefault();
+    console.log("guardando datos del producto");
+
+    // TOMAR LOS DATOS MODIFICADOS DEL FORM
+    let codigo = document.getElementById('codigo').value,
+        nombre = document.getElementById('nombre').value,
+        numeroSerie = document.getElementById('numSerie').value,
+        categoria = document.getElementById('categoria').value,
+        descripcion = document.getElementById('descripcion').value,
+        stock = document.getElementById('stock').value,
+        precio = document.getElementById('precio').value,
+        imagen = document.getElementById('imagen').value;
+
+    // ACTUALIZAR ESOS DATOS EN EL ARREGLO
+    for (let i in productos) {
+        if (productos[i].codigo == codigo) {
+            // encontramos el producto
+            productos[i].nombre = nombre;
+            productos[i].numeroSerie = numeroSerie;
+            productos[i].categoria = categoria;
+            productos[i].descripcion = descripcion;
+            productos[i].stock = stock;
+            productos[i].precio = precio;
+            productos[i].imagen = imagen;
+        }
+    }
+
+    // ACTUALIZARMOS EL LOCALSTORAGE
+    localStorage.setItem("funkopopKey", JSON.stringify(productos));
+    limpiarFormulario();
+
+    // ACTUALIZAR FILAS DE LA TABLA
+    leerProductos();
+
+    let modalProducto = document.getElementById('modalProducto');
+    $(modalProducto).modal('hide');
+}
+
+// LIMPIAR FORMULARIO
+function limpiarFormulario() {
+    document.getElementById('formProducto').reset();
+    productoExistente = false;
+}
