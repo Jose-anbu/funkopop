@@ -253,6 +253,7 @@ window.editarProducto = function (codigo) {
 }
 
 window.guardarDatos = function (event) {
+    // agregar validaciones
 
     if (productoExistente == false) {
         // agregar un nuevo producto
@@ -303,7 +304,7 @@ function productoModificado(event) {
 }
 
 // LIMPIAR FORMULARIO
-function limpiarFormulario() {
+window.limpiarFormulario = function () {
     document.getElementById('formProducto').reset();
     productoExistente = false;
 }
