@@ -64,20 +64,6 @@
                         </tr>
                     </thead>
                     <tbody id="listaProductos">
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Superman</td>
-                            <td>465AHS</td>
-                            <td>Superheroe</td>
-                            <td>Personaje DC</td>
-                            <td>10</td>
-                            <td>2000</td>
-                            <td>Superman.jpg</td>
-                            <td>
-                                <button class="btn btn-outline-info">Editar</button>
-                                <button class="btn btn-outline-danger">Borrar</button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </article>
@@ -96,39 +82,87 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form onsubmit="agregarProducto(event)" id="formProducto">
                         <div class="form-group">
                             <label>Código</label>
                             <input type="text" class="form-control" id="codigo" placeholder="ej: 1">
+                            <div class="valid-feedback">
+                                Perfecto!
+                            </div>
+                            <div class="invalid-feedback">
+                                Introduce un código válido
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Nombre</label>
                             <input type="text" class="form-control" id="nombre" placeholder="ej: Ironman">
+                            <div class="valid-feedback">
+                                Perfecto!
+                            </div>
+                            <div class="invalid-feedback">
+                                Ingrese un nombre válido
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Número de serie</label>
                             <input type="text" class="form-control" id="numSerie" placeholder="ej: 456AHS">
+                            <div class="valid-feedback">
+                                Perfecto!
+                            </div>
+                            <div class="invalid-feedback">
+                                Formato incorrecto
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Categoría</label>
                             <input type="text" class="form-control" id="categoria" placeholder="ej: superheroe">
+                            <div class="valid-feedback">
+                                Perfecto!
+                            </div>
+                            <div class="invalid-feedback">
+                                Categoría incorrecta
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Descripción</label>
                             <input type="text" class="form-control" id="descripcion"
                                 placeholder="ej: Superheroe de Marvel">
+                                <div class="valid-feedback">
+                                    Perfecto!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Completa la descripción
+                                </div>
                         </div>
                         <div class="form-group">
                             <label>Stock</label>
                             <input type="text" class="form-control" id="stock" placeholder="ej: 5">
+                            <div class="valid-feedback">
+                                Perfecto!
+                            </div>
+                            <div class="invalid-feedback">
+                                Solo números
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Precio</label>
                             <input type="text" class="form-control" id="precio" placeholder="ej: 5000">
+                            <div class="valid-feedback">
+                                Perfecto!
+                            </div>
+                            <div class="invalid-feedback">
+                                Solo números
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Imagen</label>
                             <input type="text" class="form-control" id="imagen" placeholder="ej: ironman.jpg">
+                            <div class="valid-feedback">
+                                Perfecto!
+                            </div>
+                            <div class="invalid-feedback">
+                                Formato incorrecto
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
