@@ -10,29 +10,30 @@ leerProductos();
 
 let productoExistente = false; // false = producto es nuevo; true = modificar producto
 
-window.agregarProducto = function (event) {     // window.nombreDeVariable = function (event) -> para cuando queremos acceder a una función por fuera del archivo js cuando usamos webpack 
-    event.preventDefault();
+window.agregarProducto = function () {     // window.nombreDeVariable = function (event) -> para cuando queremos acceder a una función por fuera del archivo js cuando usamos webpack 
+    
     console.log("desde agregar producto");
 
     // validar formulario
-    if (ingresarCodigo() && ingresarNombre() && ingresarNumSerie() && ingresarCategoria() && ingresarDescripcion() && ingresarStock() && ingresarPrecio() && ingresarImagen()) {
-        console.log("todo ok")
-        // CREAR EL OBJETO
-        let productoFunko = new Funko(codigo.value, nombre.value, numeroSerie.value, categoria.value, descripcion.value, stock.value, precio.value, imagen.value);
+    // if (ingresarCodigo() && ingresarNombre() && ingresarNumSerie() && ingresarCategoria() && ingresarDescripcion() && ingresarStock() && ingresarPrecio() && ingresarImagen()) {
+    // console.log("todo ok")
+    
+    // CREAR EL OBJETO
+    let productoFunko = new Funko(codigo.value, nombre.value, numeroSerie.value, categoria.value, descripcion.value, stock.value, precio.value, imagen.value);
 
-        console.log(productoFunko);
+    console.log(productoFunko);
 
-        // GUARDO EL OBJETO EN EL ARRAY: nombreArreglo.push(loQueQuieroGuardar)
-        productos.push(productoFunko);
+    // GUARDO EL OBJETO EN EL ARRAY: nombreArreglo.push(loQueQuieroGuardar)
+    productos.push(productoFunko);
 
-        // GUARDAR EL ARRAY EN LOCALSTORAGE
-        localStorage.setItem('funkopopKey', JSON.stringify(productos));
+    // GUARDAR EL ARRAY EN LOCALSTORAGE
+    localStorage.setItem('funkopopKey', JSON.stringify(productos));
 
-        // LIMPIAR FORMULARIO
-        limpiarFormulario();
+    // LIMPIAR FORMULARIO
+    limpiarFormulario();
 
-        leerProductos();
-    }
+    leerProductos();
+    // }
 }
 
 // FUNCIONES PARA VALIDAR CAMPOS
@@ -253,19 +254,25 @@ window.editarProducto = function (codigo) {
 }
 
 window.guardarDatos = function (event) {
-    // agregar validaciones
+    event.preventDefault();
 
-    if (productoExistente == false) {
-        // agregar un nuevo producto
-        agregarProducto(event);
+    // agregar validaciones
+    if (ingresarCodigo() && ingresarNombre() && ingresarNumSerie() && ingresarCategoria() && ingresarDescripcion() && ingresarStock() && ingresarPrecio() && ingresarImagen()) {
+
+        if (productoExistente == false) {
+            // agregar un nuevo producto
+            agregarProducto();
+        } else {
+            // modificar el producto existente
+            productoModificado();
+        }
     } else {
-        // modificar el producto existente
-        productoModificado(event);
+        alert('completar todos los campos');
     }
 }
 
-function productoModificado(event) {
-    event.preventDefault();
+function productoModificado() {
+    
     console.log("guardando datos del producto");
 
     // TOMAR LOS DATOS MODIFICADOS DEL FORM
