@@ -3,6 +3,8 @@ import 'bootstrap';
 import '../css/style.css';
 import Funko from './funko.js';  // import nombreDeLaVariableDondeVoyAGuardarLoQueQuieroImportar from './archivoAImportar'; -> si está en la misma ubicación solo agregar ./
 import $ from 'jquery';
+import Swal from 'sweetalert2';
+import '@fortawesome/fontawesome-free/js/all.min.js';
 
 // INICIALIZO VARIABLES
 let productos = [];
@@ -11,13 +13,13 @@ leerProductos();
 let productoExistente = false; // false = producto es nuevo; true = modificar producto
 
 window.agregarProducto = function () {     // window.nombreDeVariable = function (event) -> para cuando queremos acceder a una función por fuera del archivo js cuando usamos webpack 
-    
+
     console.log("desde agregar producto");
 
     // validar formulario
     // if (ingresarCodigo() && ingresarNombre() && ingresarNumSerie() && ingresarCategoria() && ingresarDescripcion() && ingresarStock() && ingresarPrecio() && ingresarImagen()) {
     // console.log("todo ok")
-    
+
     // CREAR EL OBJETO
     let productoFunko = new Funko(codigo.value, nombre.value, numeroSerie.value, categoria.value, descripcion.value, stock.value, precio.value, imagen.value);
 
@@ -33,6 +35,15 @@ window.agregarProducto = function () {     // window.nombreDeVariable = function
     limpiarFormulario();
 
     leerProductos();
+
+    let ventanaModal = document.getElementById('modalProducto');
+    $(ventanaModal).modal('hide');
+
+    Swal.fire(
+        'Operación exitosa!',
+        'Se agregó un nuevo producto al catálogo!',
+        'success'
+    );
     // }
 }
 
@@ -170,8 +181,8 @@ function dibujarFilas(_productos) {
         <td>$ ${_productos[i].precio}</td>
         <td>${_productos[i].imagen}</td>
         <td>
-            <button class="btn btn-outline-info" onclick="editarProducto(${_productos[i].codigo})">Editar</button>
-            <button class="btn btn-outline-danger" onclick="eliminarProducto(this)" id="${_productos[i].codigo}">Borrar</button>
+            <button class="btn btn-outline-info" onclick="editarProducto(${_productos[i].codigo})"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-outline-danger" onclick="eliminarProducto(this)" id="${_productos[i].codigo}"><i class="fas fa-trash"></i></button>
         </td>
     </tr>`
 
@@ -193,26 +204,48 @@ function borrarFilas() {
 window.eliminarProducto = function (prod) {
     console.log(prod);
 
-    // BUSCAR UN OBJETO EN EL ARREGLO (OPCION 1)
-    // for(let i in productos){
-    //     if (productos[i].codigo == prod.id){
-    //         // OBJETO ENCONTRADO
+    Swal.fire({
+        title: 'Está seguro de eliminar el producto?',
+        text: "No puedes volver esta operación atrás!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Borrar'
+    }).then((result) => {
+        if (result.value) {
+            console.log(result.value);
 
-    //     }
-    // }
+            // BUSCAR UN OBJETO EN EL ARREGLO (OPCION 1)
+            // for(let i in productos){
+            //     if (productos[i].codigo == prod.id){
+            //         // OBJETO ENCONTRADO
 
-    // filter: DEVUELVE UN ARREGLO
-    let arregloFiltrado = productos.filter(function (item) {
-        return item.codigo != prod.id;   // indico que quiero conservar todos los items cuyo código sea distinto del código "2" supongamos. Por lo tanto la variable arregloFiltrado guardará los items que no cumplan con la condición (en este caso, es que NO cumplan porque tiene !=)
+            //     }
+            // }
+
+            // filter: DEVUELVE UN ARREGLO
+            let arregloFiltrado = productos.filter(function (item) {
+                return item.codigo != prod.id;   // indico que quiero conservar todos los items cuyo código sea distinto del código "2" supongamos. Por lo tanto la variable arregloFiltrado guardará los items que no cumplan con la condición (en este caso, es que NO cumplan porque tiene !=)
+            })
+
+            console.log(arregloFiltrado);
+
+            localStorage.setItem('funkopopKey', JSON.stringify(arregloFiltrado));
+            productos = arregloFiltrado;
+            leerProductos();
+
+            console.log(arregloFiltrado);
+
+            Swal.fire(
+                'Producto eliminado!',
+                'El producto fue eliminado satisfactoriamente',
+                'success'
+            )
+        }
     })
 
-    console.log(arregloFiltrado);
 
-    localStorage.setItem('funkopopKey', JSON.stringify(arregloFiltrado));
-    productos = arregloFiltrado;
-    leerProductos();
-
-    console.log(arregloFiltrado);
 }
 
 window.editarProducto = function (codigo) {
@@ -272,7 +305,7 @@ window.guardarDatos = function (event) {
 }
 
 function productoModificado() {
-    
+
     console.log("guardando datos del producto");
 
     // TOMAR LOS DATOS MODIFICADOS DEL FORM
